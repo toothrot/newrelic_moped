@@ -9,7 +9,7 @@ Gem::Specification.new do |gem|
   gem.homepage      = ""
 
   gem.files         = Dir["{lib}/**/*.rb", "LICENSE", "*.md"]
-  gem.name          = "newrelic_moped-toothrot"
+  gem.name          = "newrelic_moped"
   gem.require_paths = ["lib"]
   gem.version       = NewrelicMoped::VERSION
   gem.add_dependency 'newrelic_rpm', '~> 3.6.0'
