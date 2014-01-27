@@ -54,7 +54,7 @@ class TestInstrumentation < Test::Unit::TestCase
 end
 
 class NewRelicMopedInstrumentationTest < Test::Unit::TestCase
-  include NewRelic::Moped::Instrumentation
+  include NewRelic::Agent::Instrumentation::Moped
 
   def test_when_command_is_mapreduce
     command = MopedCommandWithCollectionFake.new("COMMAND database=my_database command={:mapreduce=>\"users\", :query=>{}}", "other_collection")
@@ -74,6 +74,13 @@ class NewRelicMopedInstrumentationTest < Test::Unit::TestCase
     command = MopedCommandWithCollectionFake.new("COMMAND database=my_database command={:count=>\"users\", query=>{}}", "other_collection")
     operation, collection = determine_operation_and_collection(command)
     assert_equal("COUNT", operation)
+    assert_equal("users", collection, "it should parse collection from statement")
+  end
+
+  def test_when_command_is_get_more
+    command = MopedCommandWithCollectionFake.new("GET_MORE database=my_database collection=users limit=0 cursor_id=113473787917252684", "users")
+    operation, collection = determine_operation_and_collection(command)
+    assert_equal("GET_MORE", operation)
     assert_equal("users", collection, "it should parse collection from statement")
   end
 
